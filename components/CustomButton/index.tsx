@@ -1,16 +1,25 @@
-import { Text, TouchableOpacity, TVParallaxProperties } from "react-native";
-import React from "react";
+import {
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  TVParallaxProperties,
+  ViewStyle,
+} from "react-native";
+import React, { Fragment } from "react";
 
 interface CustomButtonProps {
   title: string;
   handlePress: any;
   containerStyles: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   activeOpacity?: number;
   titleStyles?: string;
   hasTVPreferredFocus?: boolean;
   tvParallaxProperties?: TVParallaxProperties;
   disableTouchSound?: boolean;
+  renderAdditionComponent?: React.Component | any;
+  touchableOpacityStyles?: StyleProp<ViewStyle>;
+  disableTouchableOpacity?: boolean;
 }
 
 const CustomButton = ({
@@ -23,22 +32,30 @@ const CustomButton = ({
   hasTVPreferredFocus,
   tvParallaxProperties,
   disableTouchSound,
+  renderAdditionComponent,
+  touchableOpacityStyles,
+  disableTouchableOpacity = false,
 }: CustomButtonProps) => {
   return (
-    <TouchableOpacity
-      onPress={handlePress}
-      activeOpacity={activeOpacity || 0.7}
-      hasTVPreferredFocus={hasTVPreferredFocus}
-      tvParallaxProperties={tvParallaxProperties}
-      touchSoundDisabled={disableTouchSound}
-      className={`bg-secondary rounded-xl min-h-16 justify-center items-center align-middle ${containerStyles} ${
-        isLoading ? "opacity-55" : "opacity-100"
-      }`}
-    >
-      <Text className={`text-primary font-psemibold text-lg ${titleStyles}`}>
-        {title}
-      </Text>
-    </TouchableOpacity>
+    <Fragment>
+      <TouchableOpacity
+        onPress={handlePress}
+        activeOpacity={activeOpacity || 0.7}
+        hasTVPreferredFocus={hasTVPreferredFocus}
+        tvParallaxProperties={tvParallaxProperties}
+        touchSoundDisabled={disableTouchSound}
+        className={`bg-secondary rounded-xl min-h-16 justify-center items-center align-middle ${containerStyles} ${
+          isLoading ? "opacity-55" : "opacity-100"
+        }`}
+        style={touchableOpacityStyles}
+        disabled={disableTouchableOpacity}
+      >
+        <Text className={`text-primary font-psemibold text-lg ${titleStyles}`}>
+          {title}
+        </Text>
+      </TouchableOpacity>
+      {renderAdditionComponent}
+    </Fragment>
   );
 };
 
